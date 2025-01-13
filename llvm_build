@@ -1,0 +1,20 @@
+#!/bin/bash
+echo "=========================="
+echo "       LLVM Builder"
+echo "    by Nakada Tokumei"
+echo "=========================="
+
+if [[ ! -d build/ ]]; then
+    mkdir build/
+fi
+
+cd build/
+
+cmake -G Ninja ../llvm                                          \
+    -DLLVM_ENABLE_PROJECTS="clang;lld"                          \
+    -DLLVM_ENABLE_RUNTIMES="libc;libunwind;libcxxabi;libcxx"    \
+    -DCMAKE_BUILD_TYPE=Debug                                    \
+    -DLLVM_TARGETS_TO_BUILD="X86"                               \
+    -DLLVM_ENABLE_ASSERTATIONS=ON
+
+ninja -j8
