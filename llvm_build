@@ -13,8 +13,10 @@ cd build/
 cmake -G Ninja ../llvm                                          \
     -DLLVM_ENABLE_PROJECTS="clang;lld"                          \
     -DLLVM_ENABLE_RUNTIMES="libc;libunwind;libcxxabi;libcxx"    \
-    -DCMAKE_BUILD_TYPE=Debug                                    \
+    -DCMAKE_BUILD_TYPE=Release                                  \
     -DLLVM_TARGETS_TO_BUILD="X86"                               \
+    -DLLVM_DEFAULT_TARGET_TRIPLE="x86_64-pc-linux-gnu"          \
+    -DLLVM_RUNTIME_TARGETS="X86"                                \
     -DLLVM_ENABLE_ASSERTATIONS=ON
 
 ninja -j8
