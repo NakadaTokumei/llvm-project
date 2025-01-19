@@ -906,6 +906,13 @@ Parser::ParseExternalDeclaration(ParsedAttributes &Attrs,
     SourceLocation StartLoc = Tok.getLocation();
     SourceLocation EndLoc;
 
+    ConsumeToken();
+    if (isDeclarationSpecifier(ImplicitTypenameContext::Yes))
+    {
+      Diag(diag::note_nakada) << "Success To parse function";
+      return nullptr;
+    }
+
     ExprResult Result(ParseSimpleAsm(/*ForAsmLabel*/ false, &EndLoc));
 
     // Check if GNU-style InlineAsm is disabled.
@@ -1713,8 +1720,9 @@ ExprResult Parser::ParseSimpleAsm(bool ForAsmLabel, SourceLocation *EndLoc) {
 
   BalancedDelimiterTracker T(*this, tok::l_paren);
   if (T.consumeOpen()) {
-    Diag(Tok, diag::err_expected_lparen_after) << "asm";
-    return ExprError();
+    Diag(Tok, diag::note_nakada) << "Embedded Assembly Supported";
+    ConsumeToken();
+    return ExprEmpty();
   }
 
   ExprResult Result(ParseAsmStringLiteral(ForAsmLabel));
