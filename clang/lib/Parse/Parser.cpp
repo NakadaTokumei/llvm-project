@@ -906,11 +906,15 @@ Parser::ParseExternalDeclaration(ParsedAttributes &Attrs,
     SourceLocation StartLoc = Tok.getLocation();
     SourceLocation EndLoc;
 
-    ConsumeToken();
-    if (isDeclarationSpecifier(ImplicitTypenameContext::Yes))
+    if (PP.LookAhead(1).is(tok::identifier) &&
+        PP.LookAhead(2).is(tok::l_paren))
     {
       Diag(diag::note_nakada) << "Success To parse function";
       return nullptr;
+    }
+    else
+    {
+      Diag(diag::note_nakada) << "It's not an embedded assembly function";
     }
 
     ExprResult Result(ParseSimpleAsm(/*ForAsmLabel*/ false, &EndLoc));

@@ -4957,3 +4957,9 @@ def NoTrivialAutoVarInit: InheritableAttr {
   let Documentation = [NoTrivialAutoVarInitDocs];
   let SimpleHandler = 1;
 }
+
+def EmbeddedAssembly : InheritableAttr {
+  let Spellings = [GCC<"embedded_assembly">];
+  let Subjects = SubjectList<[Function]>;
+  let Documentation = [Undocumented];
+}
