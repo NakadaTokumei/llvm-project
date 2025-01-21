@@ -4454,6 +4454,9 @@ void Parser::ParseDeclarationSpecifiers(
       diagnoseUseOfC11Keyword(Tok);
       isInvalid = DS.setFunctionSpecNoreturn(Loc, PrevSpec, DiagID);
       break;
+    case tok::kw_asm:
+      isInvalid = DS.setFunctionSpecAsm(Loc, PrevSpec, DiagID);
+      break;
 
     // friend
     case tok::kw_friend:
@@ -6180,6 +6183,8 @@ bool Parser::isDeclarationSpecifier(
   case tok::kw_virtual:
   case tok::kw_explicit:
   case tok::kw__Noreturn:
+    // Nakada's custom specifier
+  case tok::kw_asm:
 
     // alignment-specifier
   case tok::kw__Alignas:

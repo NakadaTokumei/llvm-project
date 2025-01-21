@@ -910,7 +910,9 @@ Parser::ParseExternalDeclaration(ParsedAttributes &Attrs,
         PP.LookAhead(2).is(tok::l_paren))
     {
       Diag(diag::note_nakada) << "Success To parse function";
-      return nullptr;
+      
+      return ParseDeclaration(DeclaratorContext::File, EndLoc, Attrs,
+                              DeclSpecAttrs);
     }
     else
     {
@@ -1527,6 +1529,12 @@ Decl *Parser::ParseFunctionDefinition(ParsingDeclarator &D,
   // Late attributes are parsed in the same scope as the function body.
   if (LateParsedAttrs)
     ParseLexedAttributeList(*LateParsedAttrs, Res, false, true);
+
+  if (D.getDeclSpec().isAsmSpecified())
+  {
+    StmtResult stmt = ParseMicrosoftAsmStatement(Tok.getLocation());
+    return Actions.ActOnFinishFunctionBody(Res, stmt.get());
+  }
 
   return ParseFunctionStatementBody(Res, BodyScope);
 }

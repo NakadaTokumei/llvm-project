@@ -1104,6 +1104,14 @@ bool DeclSpec::setFunctionSpecNoreturn(SourceLocation Loc,
   return false;
 }
 
+bool DeclSpec::setFunctionSpecAsm(SourceLocation Loc,
+                                  const char *&PrevSpec,
+                                  unsigned &DiagID) {
+  FS_asm_speicfied = true;
+  FS_asmLoc = Loc;
+  return false;
+}
+
 bool DeclSpec::SetFriendSpec(SourceLocation Loc, const char *&PrevSpec,
                              unsigned &DiagID) {
   if (isFriendSpecified()) {
